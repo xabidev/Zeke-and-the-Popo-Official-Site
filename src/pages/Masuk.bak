@@ -1,0 +1,305 @@
+<template>
+  <q-page>
+    <div class="slideshow padding" style="z-index:-2">
+      <div class="slideshow-image"></div>
+      <div class="slideshow-image"></div>
+      <div class="slideshow-image"></div>
+      <div class="slideshow-image"></div>
+    </div>
+    <div class="text-center q-py-xl" style="min-height:100px">
+      <router-link to="/">
+        <q-img
+          :src="$q.dark.isActive ? '/statics/logo_dark.png' : '/statics/logo.png'"
+          width="50px"
+        />
+      </router-link>
+    </div>
+    <q-card flat class="q-pa-md bg-transparent">
+      <p class="text-center text-subtitle2 text-grey-9">You're about to access our secret pages</p>
+
+      <q-card-section>
+        <q-input
+          class="q-pa-none"
+          outlined
+          ref="email"
+          v-model="email"
+          label="Type your email.."
+          type="email"
+          placeholder
+          filled
+          hint
+          lazy-rules
+          :rules="[
+            val => !!val || 'Email required',
+            val => this.validateEmail(val) || 'Email not valid'
+          ]"
+        />
+      </q-card-section>
+
+      <q-card-section>
+        <q-input
+          class="q-pa-none q-mb-none"
+          outlined
+          ref="password"
+          v-model="password"
+          label="Your Invitation Code"
+          type="password"
+          placeholder
+          filled
+          hint
+          :rules="[val => !!val || 'Invitation Code required']"
+        />
+      </q-card-section>
+
+      <q-card-section>
+        <q-btn
+          push
+          color="primary"
+          label="CONFIRM"
+          class="full-width"
+          size="lg"
+          @click="cobaMasuk"
+        />
+      </q-card-section>
+    </q-card>
+
+    <div class="q-pt-none q-px-lg q-mb-lg absolute-bottom">
+      <q-banner class="bg-transparent">
+        <template v-slot:avatar>
+          <q-icon name="fab fa-instagram" color="primary" />
+        </template>
+        <p class="text-caption">Don't have invitation code? Follow @zekeandthepopo to get yours</p>
+      </q-banner>
+
+      <!-- <q-linear-progress :value="progress" :buffer="buffer" color="grey-5" class="q-mt-sm" />
+
+      <q-linear-progress :value="progress" :buffer="buffer" color="grey-7" class="q-mt-sm" /> -->
+    </div>
+  </q-page>
+</template>
+
+<script>
+import isEmail from "validator/lib/isEmail";
+// import Birds from 'components/Birds'
+import Vanta from "vanta/dist/vanta.birds.min";
+import * as THREE from "three";
+
+export default {
+  name: "PageMasuk",
+  components: {
+    //    Birds
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      progress: 0.01,
+      buffer: 0.01
+    };
+  },
+  methods: {
+    validateEmail(value) {
+      return isEmail(value);
+    },
+    cobaMasuk() {
+      const emailSelector = this.$refs.email;
+      const passwordSelector = this.$refs.password;
+
+      emailSelector.validate();
+      passwordSelector.validate();
+
+      if (emailSelector.hasError || passwordSelector.hasError) return;
+      else {
+        let data = {
+          email: this.email,
+          password: this.password
+        };
+        this.cobaAuth(data);
+      }
+    },
+    async cobaAuth(payload) {
+      try {
+        // firebase authentication
+        await this.$firebase
+          .auth()
+          .signInWithEmailAndPassword(payload.email, payload.password);
+        this.$router.push("/dashboard");
+      } catch (err) {
+        this.$q.notify({
+          message: err.message,
+          color: "negative",
+          icon: "eva-alert-circle-outline",
+          position: "top"
+        });
+      }
+    }
+  },
+
+  mounted() {
+    this.vantaEffect = VANTA.BIRDS({
+      el: "#birds",
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      backgroundColor: 0xffffff,
+      color1: 0x0,
+      color2: 0xbebebe,
+      colorMode: "lerp",
+      quantity: 1.0,
+      backgroundAlpha: 0.0,
+      THREE
+    });
+    this.interval = setInterval(() => {
+      if (this.progress >= 1) {
+        this.progress = 0.01;
+        this.buffer = 0.01;
+        return;
+      }
+
+      this.progress = Math.min(1, this.buffer, this.progress + 0.1);
+    }, 700 + Math.random() * 1000);
+
+    this.bufferInterval = setInterval(() => {
+      if (this.buffer < 1) {
+        this.buffer = Math.min(1, this.buffer + Math.random() * 0.2);
+      }
+    }, 700);
+  }
+};
+</script>
+
+<style lang="scss">
+$items: 4;
+$animation-time: 4s;
+$transition-time: 0.5s;
+$scale: 20%;
+
+$total-time: ($animation-time * $items);
+$scale-base-1: (1 + $scale / 100%);
+
+.zatpp_cta h3 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.title,
+.subtitle {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.slideshow {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.body--light .slideshow-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("/statics/bg.jpg") no-repeat 50% 50%;
+  background-size: cover;
+  animation-name: kenburns;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: $total-time;
+  opacity: 1;
+  transform: scale($scale-base-1);
+
+  @for $i from 1 through $items {
+    &:nth-child(#{$i}) {
+      animation-name: kenburns-#{$i};
+      z-index: ($items - $i);
+    }
+  }
+}
+
+.body--dark .slideshow-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("/statics/bg_dark.jpg") no-repeat 50% 50%;
+  background-size: cover;
+  animation-name: kenburns;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: $total-time;
+  opacity: 1;
+  transform: scale($scale-base-1);
+
+  @for $i from 1 through $items {
+    &:nth-child(#{$i}) {
+      animation-name: kenburns-#{$i};
+      z-index: ($items - $i);
+    }
+  }
+}
+
+@for $i from 1 through $items {
+  @keyframes kenburns-#{$i} {
+    $animation-time-percent: percentage($animation-time / $total-time);
+    $transition-time-percent: percentage($transition-time / $total-time);
+
+    $t1: ($animation-time-percent * ($i - 1) - $transition-time-percent / 2);
+    $t2: ($animation-time-percent * ($i - 1) + $transition-time-percent / 2);
+    @if ($t1 < 0%) {
+      $t1: 0%;
+    }
+    @if ($t2 < 0%) {
+      $t2: 0%;
+    }
+
+    $t3: ($animation-time-percent * ($i) - $transition-time-percent / 2);
+    $t4: ($animation-time-percent * ($i) + $transition-time-percent / 2);
+    @if ($t3 > 100%) {
+      $t3: 100%;
+    }
+    @if ($t4 > 100%) {
+      $t4: 100%;
+    }
+
+    $t5: (100% - $transition-time-percent / 2);
+    $t6: (($t4 - $t1) * 100% / $t5);
+
+    #{$t1} {
+      opacity: 1;
+      transform: scale($scale-base-1);
+    }
+    #{$t2} {
+      opacity: 1;
+    }
+    #{$t3} {
+      opacity: 1;
+    }
+    #{$t4} {
+      opacity: 0;
+      transform: scale(1);
+    }
+
+    @if ($i != $items) {
+      100% {
+        opacity: 0;
+        transform: scale($scale-base-1);
+      }
+    }
+
+    @if ($i == 1) {
+      $scale-plus: ($scale * (100% - $t5) / $t4);
+      $scale-plus-base-1: (1 + ($scale + $scale-plus) / 100%);
+
+      #{$t5} {
+        opacity: 0;
+        transform: scale($scale-plus-base-1);
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+}
+</style>

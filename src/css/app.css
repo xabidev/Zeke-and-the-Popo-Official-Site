@@ -1,0 +1,80 @@
+@font-face {
+    font-family: 'athelasregular';
+    src: url('./fonts/athelas/athelas-regular-webfont.woff2') format('woff2'),
+         url('./fonts/athelas/athelas-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'athelasbold';
+    src: url('./fonts/athelas/athelas-bold-webfont.woff2') format('woff2'),
+         url('./fonts/athelas/athelas-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'big_caslonmedium';
+    src: url('./fonts/bigcaslon/big_caslon_medium-webfont.woff2') format('woff2'),
+         url('./fonts/bigcaslon/big_caslon_medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.athelasregular {
+    font-family: 'athelasregular';
+  }
+  
+.bigcaslon {
+    font-family: 'big_caslonmedium';
+}
+
+* {
+    font-family: 'athelasregular';
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'big_caslonmedium';
+    font-weight: bold;
+}
+
+/*
+.body--light .q-page {
+    background: url(/statics/bg.jpg) repeat;
+  }
+.body--dark  .q-page {
+    background: url(/statics/bg_dark.jpg) repeat !important;
+  }
+*/
+
+@media only screen and (min-width: 600px) {
+
+      
+.body--light {
+    background: #1d1d1d;
+}
+.body--dark {
+    background: #1d1d1d;
+}
+
+.q-page {
+    width: 786px;
+    margin: 0 auto 0;
+}
+
+#zatpp_videopage, #zatpp_storypage, #zatpp_dashboardpage, #zatpp_themenu {
+    width: 768px;
+    margin: 0 auto 0;
+}
+
+.q-drawer {
+    width: 30% !important;
+}
+.q-drawer.fixed {
+    width: 250px !important;
+}
+
+}

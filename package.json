@@ -1,0 +1,57 @@
+{
+  "name": "zatpp",
+  "version": "0.0.1",
+  "description": "ZATPP",
+  "productName": "ZATPP",
+  "cordovaId": "com.zatpp.app",
+  "author": "pryspry",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@cycjimmy/vue-h5-audio-controls": "^1.0.6",
+    "@quasar/extras": "^1.6.1",
+    "axios": "^0.19.0",
+    "firebase": "^7.13.2",
+    "node-sass": "^4.13.1",
+    "quasar": "^1.9.12",
+    "sass-loader": "^8.0.2",
+    "three": "^0.115.0",
+    "validator": "^10.11.0",
+    "vanta": "^0.5.14",
+    "vue-plyr": "^6.0.4",
+    "vue-runtime-helpers": "^1.1.2",
+    "vue-threejs": "^0.2.0-alpha.1",
+    "vue-wave-surfer": "^1.0.1",
+    "vue-youtube": "^1.4.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.6.1",
+    "@vue/devtools": "^5.3.3",
+    "strip-ansi": "=3.0.1",
+    "vue-particles": "^1.0.9"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "yarn": ">= 1.6.0",
+    "npm": ">= 5.6.0"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ],
+  "resolutions": {
+    "ajv": "6.8.1"
+  },
+  "main": ".postcssrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akbarpn136/smk.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akbarpn136/smk/issues"
+  },
+  "homepage": "https://github.com/akbarpn136/smk#readme"
+}
